@@ -1,14 +1,3 @@
-/* async function sayHello() {
-    let [tab] = await chrome.tabs.query({ active: true });
-    chrome.scripting.executeScript({
-        target: { tabId: tab.id },
-        func: () => {
-            alert("This is the extension Alert!!")
-        }
-    })
-}
-document.getElementById('myButton').addEventListener("click", sayHello) */
-
 const copyButtons = document.querySelectorAll(".copy-btn");
 
 copyButtons.forEach((button) => {
