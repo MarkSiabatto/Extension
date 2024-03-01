@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "My First Extension",
+  "version": "1.0",
+  "background": {
+    "service_worker": "service_worker.js",
+    "type": "module"
+  },
+  "description": "This is my first extension.",
+  "permissions": ["scripting"],
+  "host_permissions": ["http://*/*", "https://*/*"],
+
+  "action": {
+    "default_icon":"icon32.png"
+  }
+}
