@@ -4,24 +4,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>T2 Notes</title>
+    <title>Simple Note Taking App</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div id="main">
-        <h1>My Notes</h1>
-        <form id="account-info">
-            <label for="account-number">Account Number:</label>
-            <input type="text" id="account-number" name="accountNumber" placeholder="Enter Account Number">
-            <br>
-            <label for="phone-number">Phone Number:</label>
-            <input type="tel" id="phone-number" name="phoneNumber" placeholder="Enter Phone Number">
-            <br>
-        </form>
-        <h2>To-Do List</h2>
-        <ul id="todo-list"></ul>
-        <button id="add-item">Add Item</button>
-    </div>
+    <h1>My Notes</h1>
+    <form id="account-info">
+        <label for="account-number">Account Number:</label>
+        <input type="text" id="account-number" name="accountNumber" placeholder="Enter Account Number">
+        <button type="button" class="copy-btn" data-field-id="account-number">Copy</button>
+        <br>
+        <label for="phone-number">Phone Number:</label>
+        <input type="tel" id="phone-number" name="phoneNumber" placeholder="Enter Phone Number">
+        <button type="button" class="copy-btn" data-field-id="phone-number">Copy</button>
+        <br>
+        <label for="cui-number">CUI Number:</label>
+        <input type="text" id="cui-number" name="cuiNumber" placeholder="Enter CUI Number">
+        <button type="button" class="copy-btn" data-field-id="cui-number">Copy</button>
+        <br>
+        <label for="inc-number">INC Number:</label>
+        <input type="text" id="inc-number" name="incNumber" placeholder="Enter INC Number">
+        <button type="button" class="copy-btn" data-field-id="inc-number">Copy</button>
+        <br>
+    </form>
+    <h2>To-Do List</h2>
+    <ul id="todo-list"></ul>
+    <button id="add-item">Add Item</button>
     <script src="index.js" defer></script>
 </body>
 

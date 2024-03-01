@@ -9,6 +9,27 @@
 }
 document.getElementById('myButton').addEventListener("click", sayHello) */
 
+const copyButtons = document.querySelectorAll(".copy-btn");
+
+copyButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const fieldId = button.dataset.fieldId;
+    const inputField = document.getElementById(fieldId);
+    const textToCopy = inputField.value;
+
+    navigator.clipboard
+      .writeText(textToCopy)
+      .then(() => {
+        console.log("Text copied to clipboard!");
+        // Optionally add visual feedback (e.g., show a success message)
+      })
+      .catch((err) => {
+        console.error("Failed to copy text:", err);
+        // Optionally handle clipboard errors (e.g., show an error message)
+      });
+  });
+});
+
 const todoList = document.getElementById("todo-list");
 const addItemButton = document.getElementById("add-item");
 const accountForm = document.getElementById("account-info");

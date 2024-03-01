@@ -1,0 +1,24 @@
+/* Add styles for form layout (optional) */
+#account-info {
+  display: flex;
+  flex-wrap: wrap;
+  /* Allow wrapping to multiple lines if needed */
+}
+
+#account-info label,
+#account-info input {
+  margin-right: 10px;
+  /* Adjust spacing between labels and inputs */
+}
+
+/* Style for to-do list items */
+#todo-list li {
+  list-style: none;
+  /* Remove default bullet points */
+  padding: 5px;
+  /* Add some padding for readability */
+  margin-bottom: 5px;
+  /* Add space between list items */
+  border-bottom: 1px solid #ddd;
+  /* Add a light border to separate items */
+}
