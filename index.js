@@ -118,3 +118,18 @@ accountForm.addEventListener("submit", (event) => {
     console.log("Form data saved to Chrome storage!");
   });
 });
+
+const clearAllButton = document.getElementById("clear-all");
+
+clearAllButton.addEventListener("click", () => {
+  // Clear form field values
+  const formInputs = document.querySelectorAll("#account-info input");
+  formInputs.forEach((input) => {
+    input.value = "";
+  });
+
+  // Optionally clear saved data from Chrome storage
+  chrome.storage.sync.clear(() => {
+    console.log("Cleared all data from Chrome storage!");
+  });
+});
