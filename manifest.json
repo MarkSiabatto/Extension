@@ -6,11 +6,12 @@
     "service_worker": "service_worker.js",
     "type": "module"
   },
-  "description": "This is my first extension.",
+  "description": "CG T2 notes  extension.",
   "permissions": ["scripting"],
   "host_permissions": ["http://*/*", "https://*/*"],
 
   "action": {
+    "default_popup": "index.html",
     "default_icon":"icon32.png"
   }
 }
