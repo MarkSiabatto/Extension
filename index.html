@@ -8,9 +8,20 @@
 </head>
 
 <body>
-    <root></root>
-    <h2>This is the extension</h2>
-    <button id="myButton">Click</button>
+    <div id="main">
+        <h1>My Notes</h1>
+        <form id="account-info">
+            <label for="account-number">Account Number:</label>
+            <input type="text" id="account-number" name="accountNumber" placeholder="Enter Account Number">
+            <br>
+            <label for="phone-number">Phone Number:</label>
+            <input type="tel" id="phone-number" name="phoneNumber" placeholder="Enter Phone Number">
+            <br>
+        </form>
+        <h2>To-Do List</h2>
+        <ul id="todo-list"></ul>
+        <button id="add-item">Add Item</button>
+    </div>
     <script src="index.js" defer></script>
 </body>
 
