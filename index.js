@@ -37,6 +37,7 @@ function createTodoItem(text) {
   deleteButton.textContent = "Delete";
   deleteButton.addEventListener("click", () => {
     listItem.remove();
+    saveDataToStorage(); // Save data to storage when deleting a to-do item
   });
   listItem.appendChild(checkbox);
   listItem.appendChild(textArea);
@@ -50,6 +51,53 @@ addItemButton.addEventListener("click", () => {
   if (newItemText) {
     const newItem = createTodoItem(newItemText);
     todoList.appendChild(newItem);
+    saveDataToStorage(); // Save data to storage when adding a new to-do item
+  }
+});
+
+// Function to save the current data to Chrome storage
+function saveDataToStorage() {
+  // Save to-do list items
+  const todoItems = Array.from(todoList.children).map(
+    (item) => item.querySelector("textarea").value
+  );
+  chrome.storage.sync.set({ todoList: todoItems }, () => {
+    console.log("To-do list saved to Chrome storage!");
+  });
+
+  // Save other field values (account number, phone number, etc.)
+  const formData = {};
+  const formInputs = document.querySelectorAll(
+    "#account-info input[type='text'], #account-info input[type='tel']"
+  );
+  formInputs.forEach((input) => {
+    formData[input.name] = input.value;
+  });
+  chrome.storage.sync.set({ formData: formData }, () => {
+    console.log("Form data saved to Chrome storage!");
+  });
+}
+
+// Load the data from Chrome storage on page load
+chrome.storage.sync.get(["todoList", "formData"], (data) => {
+  // Load to-do list items
+  const savedTodoList = data.todoList;
+  if (savedTodoList) {
+    savedTodoList.forEach((text) => {
+      const newItem = createTodoItem(text);
+      todoList.appendChild(newItem);
+    });
+  }
+
+  // Load other field values (account number, phone number, etc.)
+  const savedFormData = data.formData;
+  if (savedFormData) {
+    const formInputs = document.querySelectorAll(
+      "#account-info input[type='text'], #account-info input[type='tel']"
+    );
+    formInputs.forEach((input) => {
+      input.value = savedFormData[input.name];
+    });
   }
 });
 
@@ -57,9 +105,16 @@ addItemButton.addEventListener("click", () => {
 accountForm.addEventListener("submit", (event) => {
   // Prevent default form submission behavior (if applicable)
   event.preventDefault();
-  // Access account number and phone number values here
-  const accountNumber = document.getElementById("account-number").value;
-  const phoneNumber = document.getElementById("phone-number").value;
-  // Do something with the account info, e.g., display it or store it
-  console.log(`Account Number: ${accountNumber}, Phone Number: ${phoneNumber}`);
+  // Access form data here
+  const formData = {};
+  const formInputs = document.querySelectorAll(
+    "#account-info input[type='text'], #account-info input[type='tel']"
+  );
+  formInputs.forEach((input) => {
+    formData[input.name] = input.value;
+  });
+  // Save form data to Chrome storage
+  chrome.storage.sync.set({ formData: formData }, () => {
+    console.log("Form data saved to Chrome storage!");
+  });
 });
