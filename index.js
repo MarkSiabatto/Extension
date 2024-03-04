@@ -22,15 +22,18 @@ copyButtons.forEach((button) => {
 const todoList = document.getElementById("todo-list");
 const addItemButton = document.getElementById("add-item");
 const accountForm = document.getElementById("account-info");
+const clearAllButton = document.getElementById("clear-all");
 
 // Function to create a new to-do list item
 function createTodoItem(text) {
   const listItem = document.createElement("li");
-  const checkbox = document.createElement("input");
+  listItem.classList.add("list-group-item"); // Add 'list-group-item' class for Bootstrap styling
   const textArea = document.createElement("textarea");
   textArea.value = text;
+  textArea.classList.add("form-control"); // Add 'form-control' class for Bootstrap styling
   const deleteButton = document.createElement("button");
   deleteButton.textContent = "Delete";
+  deleteButton.classList.add("btn", "btn-danger"); // Add button classes for Bootstrap styling
   deleteButton.addEventListener("click", () => {
     listItem.remove();
     saveDataToStorage(); // Save data to storage when deleting a to-do item
@@ -39,6 +42,8 @@ function createTodoItem(text) {
   listItem.appendChild(deleteButton);
   return listItem;
 }
+
+
 
 // Add new item button click handler
 addItemButton.addEventListener("click", () => {
@@ -96,26 +101,6 @@ chrome.storage.sync.get(["todoList", "formData"], (data) => {
   }
 });
 
-// Handle form submission (optional, if needed)
-accountForm.addEventListener("submit", (event) => {
-  // Prevent default form submission behavior (if applicable)
-  event.preventDefault();
-  // Access form data here
-  const formData = {};
-  const formInputs = document.querySelectorAll(
-    "#account-info input[type='text'], #account-info input[type='tel']"
-  );
-  formInputs.forEach((input) => {
-    formData[input.name] = input.value;
-  });
-  // Save form data to Chrome storage
-  chrome.storage.sync.set({ formData: formData }, () => {
-    console.log("Form data saved to Chrome storage!");
-  });
-});
-
-const clearAllButton = document.getElementById("clear-all");
-
 clearAllButton.addEventListener("click", () => {
   // Clear form field values
   const formInputs = document.querySelectorAll("#account-info input");
@@ -123,7 +108,10 @@ clearAllButton.addEventListener("click", () => {
     input.value = "";
   });
 
-  // Optionally clear saved data from Chrome storage
+  // Clear to-do list items
+  todoList.innerHTML = "";
+
+  // Clear saved data from Chrome storage
   chrome.storage.sync.clear(() => {
     console.log("Cleared all data from Chrome storage!");
   });
