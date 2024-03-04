@@ -27,10 +27,6 @@ const accountForm = document.getElementById("account-info");
 function createTodoItem(text) {
   const listItem = document.createElement("li");
   const checkbox = document.createElement("input");
-  checkbox.type = "checkbox";
-  checkbox.addEventListener("change", () => {
-    listItem.classList.toggle("completed");
-  });
   const textArea = document.createElement("textarea");
   textArea.value = text;
   const deleteButton = document.createElement("button");
@@ -39,7 +35,6 @@ function createTodoItem(text) {
     listItem.remove();
     saveDataToStorage(); // Save data to storage when deleting a to-do item
   });
-  listItem.appendChild(checkbox);
   listItem.appendChild(textArea);
   listItem.appendChild(deleteButton);
   return listItem;
