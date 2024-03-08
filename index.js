@@ -44,6 +44,7 @@ function createTodoItem(text) {
   const textArea = document.createElement("textarea");
   textArea.value = text;
   textArea.classList.add("form-control"); // Add 'form-control' class for Bootstrap styling
+  textArea.disabled = true; // Disable the textarea
   const deleteButton = document.createElement("button");
   deleteButton.textContent = "Delete";
   deleteButton.classList.add("btn", "btn-danger"); // Add button classes for Bootstrap styling
