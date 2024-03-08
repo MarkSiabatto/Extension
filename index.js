@@ -1,5 +1,23 @@
 const copyButtons = document.querySelectorAll(".copy-btn");
+const todoList = document.getElementById("todo-list");
+const addItemButton = document.getElementById("add-item");
+const accountForm = document.getElementById("account-info");
+const clearAllButton = document.getElementById("clear-all");
+const formInputs = document.querySelectorAll(
+  "#account-info input[type='text'], #account-info input[type='tel']"
+);
 
+// Add event listeners for form input fields
+formInputs.forEach((input) => {
+  input.addEventListener("input", saveDataToStorage);
+});
+
+// Add event listeners for to-do list item text areas
+todoList.querySelectorAll("textarea").forEach((textArea) => {
+  textArea.addEventListener("input", saveDataToStorage);
+});
+
+// Add event listeners for copy buttons
 copyButtons.forEach((button) => {
   button.addEventListener("click", () => {
     const fieldId = button.dataset.fieldId;
@@ -18,11 +36,6 @@ copyButtons.forEach((button) => {
       });
   });
 });
-
-const todoList = document.getElementById("todo-list");
-const addItemButton = document.getElementById("add-item");
-const accountForm = document.getElementById("account-info");
-const clearAllButton = document.getElementById("clear-all");
 
 // Function to create a new to-do list item
 function createTodoItem(text) {
@@ -43,8 +56,6 @@ function createTodoItem(text) {
   return listItem;
 }
 
-
-
 // Add new item button click handler
 addItemButton.addEventListener("click", () => {
   const newItemText = prompt("Enter a new todo item:");
@@ -57,53 +68,48 @@ addItemButton.addEventListener("click", () => {
 
 // Function to save the current data to Chrome storage
 function saveDataToStorage() {
-  // Save to-do list items
-  const todoItems = Array.from(todoList.children).map(
-    (item) => item.querySelector("textarea").value
-  );
-  chrome.storage.sync.set({ todoList: todoItems }, () => {
-    console.log("To-do list saved to Chrome storage!");
+  // Combine all data into a single object
+  const dataToSave = {
+    formData: {},
+    todoList: [],
+  };
+
+  // Save form field values
+  formInputs.forEach((input) => {
+    dataToSave.formData[input.name] = input.value;
   });
 
-  // Save other field values (account number, phone number, etc.)
-  const formData = {};
-  const formInputs = document.querySelectorAll(
-    "#account-info input[type='text'], #account-info input[type='tel']"
-  );
-  formInputs.forEach((input) => {
-    formData[input.name] = input.value;
+  // Save to-do list items
+  todoList.querySelectorAll("textarea").forEach((textArea) => {
+    dataToSave.todoList.push(textArea.value);
   });
-  chrome.storage.sync.set({ formData: formData }, () => {
-    console.log("Form data saved to Chrome storage!");
+
+  // Save data to Chrome storage
+  chrome.storage.sync.set(dataToSave, () => {
+    console.log("Data saved to Chrome storage!");
   });
 }
 
 // Load the data from Chrome storage on page load
-chrome.storage.sync.get(["todoList", "formData"], (data) => {
-  // Load to-do list items
-  const savedTodoList = data.todoList;
-  if (savedTodoList) {
-    savedTodoList.forEach((text) => {
-      const newItem = createTodoItem(text);
-      todoList.appendChild(newItem);
-    });
-  }
+chrome.storage.sync.get(["formData", "todoList"], (data) => {
+  // Load form field values
+  Object.entries(data.formData).forEach(([name, value]) => {
+    const input = document.querySelector(`#account-info [name="${name}"]`);
+    if (input) {
+      input.value = value;
+    }
+  });
 
-  // Load other field values (account number, phone number, etc.)
-  const savedFormData = data.formData;
-  if (savedFormData) {
-    const formInputs = document.querySelectorAll(
-      "#account-info input[type='text'], #account-info input[type='tel']"
-    );
-    formInputs.forEach((input) => {
-      input.value = savedFormData[input.name];
-    });
-  }
+  // Load to-do list items
+  data.todoList.forEach((text) => {
+    const newItem = createTodoItem(text);
+    todoList.appendChild(newItem);
+  });
 });
 
+// Add event listener for clear all button
 clearAllButton.addEventListener("click", () => {
   // Clear form field values
-  const formInputs = document.querySelectorAll("#account-info input");
   formInputs.forEach((input) => {
     input.value = "";
   });
