@@ -52,8 +52,27 @@ function createTodoItem(text) {
     listItem.remove();
     saveDataToStorage(); // Save data to storage when deleting a to-do item
   });
+  const copyButton = document.createElement("button"); // Create copy button
+  copyButton.textContent = "Copy";
+  copyButton.classList.add("copy-btn", "btn", "btn-secondary"); // Add button classes for Bootstrap styling
+  copyButton.dataset.fieldId = `todo-item-${Date.now()}`; // Generate unique field ID for each item
+  copyButton.addEventListener("click", () => {
+    const textToCopy = textArea.value;
+
+    navigator.clipboard
+      .writeText(textToCopy)
+      .then(() => {
+        console.log("Text copied to clipboard!");
+        // Optionally add visual feedback (e.g., show a success message)
+      })
+      .catch((err) => {
+        console.error("Failed to copy text:", err);
+        // Optionally handle clipboard errors (e.g., show an error message)
+      });
+  });
   listItem.appendChild(textArea);
   listItem.appendChild(deleteButton);
+  listItem.appendChild(copyButton); // Append copy button to list item
   return listItem;
 }
 
